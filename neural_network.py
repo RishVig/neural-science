@@ -34,3 +34,9 @@ print(activation_1.output)
 
 # Now, the output of the first layer after applying ReLU activation is in activation_1.output
 print("Thank You for viewing our data!!")
+information_center = input("Want more information, [y] - yes, [n] - no: ")
+
+if information_center == "y":
+    print("Inforamtion at: https://github.com/RishVig/neural-science, graph: https://github.com/RishVig/neural-science/blob/main/graph.py")
+else:
+    print("Thank you for using your time to listen and watch my presentation")
