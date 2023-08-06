@@ -1,3 +1,4 @@
+
 import numpy as np
 import nnfs 
 from nnfs.datasets import spiral_data
@@ -23,8 +24,26 @@ class activation_softmax:
         probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)
         self.output = probabilities
 
+class loss:
+    def calculate(self, output,y):
+        sample_losses = self.forward(output, y)
+        data_loss = np.mean(sample_losses)
+        return data_loss
 
+class loss_catagoricalcrossentropy(loss):
+    def forward(self, y_prediction, y_true):
+        samples = len(y_prediction)
+        y_prediction_cliped = np.clip(y_prediction, 1e-7, 1-1e-7)
 
+        if len(y_true.shape) == 1:
+            correct_confidences = y_prediction_cliped[range(samples), y_true]
+
+        elif len(y_true.shape) == 2:
+            correct_confidences = np.sum(y_prediction_cliped * y_true, axis= 1)
+
+        negative_loglikelehoods = -np.log(correct_confidences)
+
+        return negative_loglikelehoods
 X,y = spiral_data(samples = 100, classes = 3)
 dense1 = layer_dense(2, 3)
 
@@ -40,3 +59,8 @@ dense2.forward(activation1.output)
 activation2.forward(dense2.output)
 
 print(activation2.output[:5])
+
+loss_function = loss_catagoricalcrossentropy()
+loss = loss_function.calculate(activation2.output, y)
+
+print("Loss: ", loss)
