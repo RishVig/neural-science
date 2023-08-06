@@ -4,39 +4,39 @@ from nnfs.datasets import spiral_data
 
 nnfs.init()
 
-X, y = spiral_data(100, 3)
 
-class Layer_dense:
-    def __init__(self, n_inputs, n_neurons):
-        self.weights = 0.10 * np.random.randn(n_inputs, n_neurons)
-        self.biases = np.zeros((1, n_neurons))
 
-    def forward(self, inputs):
-        self.output = np.dot(inputs, self.weights) + self.biases
-
-class Activation_ReLU:
+class activation_relu:
     def forward(self, inputs):
         self.output = np.maximum(0, inputs)
 
-# Create the layers and perform the forward pass
-layer_1 = Layer_dense(2, 5)  # n_inputs = 2 (since we have 2 features), n_neurons = 5
-activation_1 = Activation_ReLU()
+class layer_dense:
+    def __init__(self, n_inputs, n_neurons):
+        self.weights = 0.1 * np.random.randn(n_inputs, n_neurons)
+        self.biases = np.zeros((1, n_neurons))
+    def forward(self, inputs):
+        self.output = np.dot(inputs, self.weights)
+        
+class activation_softmax:
+    def forward(self, inputs):
+        exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
+        probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)
+        self.output = probabilities
 
-layer_1 = Layer_dense(2,5)
 
-layer_1.forward(X)
-activation_1 = Activation_ReLU()
-layer_1.forward(X)
 
-activation_1.forward(layer_1.output)
-print(np.version)
-print(activation_1.output)
+X,y = spiral_data(samples = 100, classes = 3)
+dense1 = layer_dense(2, 3)
 
-# Now, the output of the first layer after applying ReLU activation is in activation_1.output
-print("Thank You for viewing our data!!")
-information_center = input("Want more information, [y] - yes, [n] - no: ")
+activation1 = activation_relu()
 
-if information_center == "y":
-    print("Inforamtion at: https://github.com/RishVig/neural-science, graph: https://github.com/RishVig/neural-science/blob/main/graph.py")
-else:
-    print("Thank you for using your time to listen and watch my presentation")
+dense2 = layer_dense(3,3)
+activation2 = activation_softmax()
+
+dense1.forward(X)
+activation1.forward(dense1.output)
+
+dense2.forward(activation1.output)
+activation2.forward(dense2.output)
+
+print(activation2.output[:5])
