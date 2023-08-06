@@ -1,3 +1,5 @@
+Model Of Use: ChatGPT 3.5(default)
+Title: My neural network for non-programmers
 Of course! Let's break down the code in simple terms:
 
 1. The code is using a computer program called Python to build a simple artificial brain (neural network) that can do some basic tasks.
