@@ -63,4 +63,13 @@ print(activation2.output[:5])
 loss_function = loss_catagoricalcrossentropy()
 loss = loss_function.calculate(activation2.output, y)
 
+def accuracy_calculations(inputs):
+    
+    target_values = [0,1,1]
+    maximum = np.argmax(inputs, axis=1)
+    answers = np.mean(maximum == target_values)
+    print("acc:", answers,"three lines of dataset in use")
+    
+accuracy_calculations(activation2.output[:3])
+
 print("Loss: ", loss)
